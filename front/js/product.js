@@ -75,16 +75,16 @@ function getJokeIn () {
 
     
     
-    
+    // Verification choix d'une couleur
     const tabListeEnfant = document.querySelector("#colors");
 
     function TabListeFunction () {
-    if (tabListeEnfant.children[0] === tabListeEnfant.children[0]) {
+    if (tabListeEnfant.children[0] != tabListeEnfant.children[0]) {
       
-      window.alert("atention");
+      window.alert("atention, mettre code ici");
       
-    } else {
-      popupPanier();
+    } else if (tabListeEnfant.children[0] === tabListeEnfant.children[0])  {
+      window.alert("atention choisir couleur !");
     }
 
   }
@@ -163,9 +163,7 @@ function getJokeIn () {
                 popupPanier();
            };
 
-          //  if (id === id) {
-          //     console.log("Salut");           
-          //  }
+      
            
            
           });
