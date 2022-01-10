@@ -84,10 +84,10 @@ function getJokeIn () {
       window.alert("atention");
       
     } else {
+      popupPanier();
     }
+
   }
-    
-   
 
 
 
@@ -151,7 +151,7 @@ function getJokeIn () {
            
            if(produitLocalStorage){
            
-               produitLocal();      
+              //  produitLocal();      
                TabListeFunction();
                
               }
