@@ -1,6 +1,4 @@
 
-// creer et initiale toute les URLs de la bare d'adresse window.location.search
-let searchParams = new URLSearchParams(window.location.search);
 
 //queryString_url_id contient window.location.search
 const queryString_url_id = window.location.search;
@@ -10,7 +8,16 @@ const utlSearchParams = new URLSearchParams(queryString_url_id);
 
 // variable ID qui recupere avec la methode get le ID
 const id = utlSearchParams.get("id");
+
+// Verification ID sécuriter //
+// if (id == id && id !== id) {
+//   window.alert("Erreur");
+// } else {
+//   window.alert("deux");
+// }
+
 console.log(id);
+
 
 
 
@@ -24,6 +31,8 @@ const resultColor = document.getElementById("colors");
 const resultQuantity = document.getElementById("quantity");
 const cart = document.getElementById("cart__items");
 
+// Verification choix d'une couleur
+const tabListeEnfant = document.querySelector("#colors");
 
 // console.log(suprimmer);
 
@@ -44,7 +53,7 @@ console.log(resultTitre);
 
 
 // Création de la fonction getJokeIn en mode asynchrone
-function getJokeIn () {
+function joker () {
   
   // Initialisation await de l'asynchrone qui permet de charger en parallèle les informations
   // fetch initiale l'API http avec les IDs des fiches produit.
@@ -75,19 +84,10 @@ function getJokeIn () {
 
     
     
-    // Verification choix d'une couleur
-    const tabListeEnfant = document.querySelector("#colors");
 
-    function TabListeFunction () {
-    if (tabListeEnfant.children[0] != tabListeEnfant.children[0]) {
-      
-      window.alert("atention, mettre code ici");
-      
-    } else if (tabListeEnfant.children[0] === tabListeEnfant.children[0])  {
-      window.alert("atention choisir couleur !");
-    }
 
-  }
+
+  
 
 
 
@@ -95,8 +95,8 @@ function getJokeIn () {
 
 
 
-    
-    
+
+
     // Injecte dans resultTitre du texte et appelle la promesse lot qui est identifié sur les élément de L'API
     resultTitre.textContent = lot.name
     resultPrix.textContent = lot.price
@@ -108,87 +108,92 @@ function getJokeIn () {
     
     //--------------------------------------------------
     
-    resultPanier.addEventListener('click', () => {
-      
-      
-      const idForm = document.querySelector("#colors").value;
-      
-      
-        const quanty = document.querySelector("#quantity").value;
-     
+resultPanier.addEventListener('click', () => {
 
-      
-      
-      let optionsProduit = {
+
+const idForm = document.querySelector("#colors").value;
+
+
+const quanty = document.querySelector("#quantity").value;
+
+
+
+let optionsProduit = {
+
+
+colors: idForm,
+id: id,
+quantity: quanty,
+price: (lot.price * quanty),
+names: lot.name,
+image: lot.imageUrl,
+alt: lot.altTxt,
+// suprimmer: suprimmer,
+};
+
+// ---------------------------FIN-------------
+
+  
+
+
+// ---------------------------------------Le local Storage ---------------------------
+    
+
+
+let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
+
         
-        
-        colors: idForm,
-        id: id,
-        quantity: quanty,
-        price: lot.price,
-        names: lot.name,
-        image: lot.imageUrl,
-        alt: lot.altTxt,
-        // suprimmer: suprimmer,
-           };
+function produitLocal () {
+    produitLocalStorage.push(optionsProduit);
+    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+};
 
-           // ---------------------------FIN-------------
 
-             
-           
-           
-           // ---------------------------------------Le local Storage ---------------------------
-                
-           
-           
-           let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
-           
-                    
-           function produitLocal () {
-               produitLocalStorage.push(optionsProduit);
-               localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-           };
-           
-           if(produitLocalStorage){
-           
-              //  produitLocal();      
-               TabListeFunction();
-               
-              }
-              
-              else{
-                
-                produitLocalStorage = [];
-                produitLocal();
-                popupPanier();
-           };
+if (tabListeEnfant.value >= 1 || tabListeEnfant.value <= 0) {
 
-      
-           
-           
-          });
-           
-           
-           //-----------------------------------------
+window.alert("atention, choisir une couleur");
+
+} 
+
+else if(produitLocalStorage){
+
+    produitLocal();      
+    popupPanier();
+    
+  }
+  
+  else{
+    
+    produitLocalStorage = [];
+    produitLocal();
+    popupPanier();
+};
+
+
+
+
+});
 
 
 
 
 
-           
-           
-    })};
+
+})};
+
+joker();
+
 
 
 // ------------------ Alerte ---------------------
 
 //Alerte le panier a été ajouter.
 const popupPanier = () => {
-  if(window.confirm(`Votre Produit a été ajouter au Panier`)) {
-      window.location.href = "cart.html"
-  } else {
-      window.location.href = "index.html"
-  };
+if(window.confirm(`Votre Produit a été ajouter au Panier`)) {
+window.location.href = "cart.html"
+} else {
+window.location.href = "index.html"
+};
 };
 //--------------------FIN ------------------------
 
@@ -197,10 +202,41 @@ const popupPanier = () => {
 
 
 
+// Verification ID sécuriter //
+// if (id === null) {
+//   window.alert("Erreur");
+// } else {
+//   window.alert("deux");
+// }
 
 
 
 
+//-------------------- Prix Total ---------------//
+
+let prixTotalCalcul = [];
+
+for (let m = 0; produitLocalStorage.length; m++) {
+    let prixProduitsDansLePanier = produitLocalStorage[m].price;
+    console.log(prixProduitsDansLePanier);
+    
+    // mettre prix du panier dans "prixTotalCalcul"
+    prixTotalCalcul.push(prixProduitsDansLePanier);
+    
+    console.log(prixTotalCalcul);
+    
+    //additionner les prix dans le tableau de la variable prixTotalCalcul
+    
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    const prixTotal = prixTotalCalcul.reduce(reducer,0);
+    
+    console.log(prixTotal);
+    
+    const htmlPrix = document.querySelector("#totalPrice");
+    htmlPrix.innerHTML = `${prixTotal}`;
+    
+}
+
+//---------------------FIN-----------------------------//
 
 
-   getJokeIn();
